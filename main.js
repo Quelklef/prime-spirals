@@ -143,8 +143,9 @@ function main() {
   const $optColor = document.getElementById('opt-color');
   const $optLines = document.getElementById('opt-lines');
   const $optWidth = document.getElementById('opt-width');
+  const $optUnits = document.getElementById('opt-units');
 
-  [$optBound, $optAngle, $optColor, $optLines, $optWidth]
+  [$optBound, $optAngle, $optColor, $optLines, $optWidth, $optUnits]
     .forEach($o => $o.addEventListener('input', () => run()));
 
   window.addEventListener('resize', () => run());
@@ -159,7 +160,7 @@ function main() {
 
     const state = {
       bound: BigInt($optBound.value),
-      turnAngle: Number($optAngle.value) * Math.PI,
+      turnAngle: Number($optAngle.value) * {'pi-rad': Math.PI, 'rad': 1, 'deg': 1 / 180 * Math.PI}[$optUnits.value],
       colorType: $optColor.value,
       drawLines: $optLines.checked,
       wideStroke: $optWidth.checked,
