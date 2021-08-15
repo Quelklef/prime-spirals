@@ -1,4 +1,8 @@
 
+function max(a, b) {
+  return a > b ? a : b;
+}
+
 // computes if a number is prime or not
 let isPrime;
 {
@@ -6,22 +10,15 @@ let isPrime;
   let hi = 1n;  // current sieve upper bound (inclusive)
 
   isPrime = n => {
-    if (typeof n !== 'bigint' || n <= 0n)
-      throw Error('Expected positive BigInt');
-
     if (n > hi) {
       for (let p = 2n; p * p <= n; p++)
         if (!nonprimes.has(p))
-          for (let c = max(hi / p * p, p * 2n); c <= n; c += p)
+          for (let c = p * max(hi / p, 2n); c <= n; c += p)
             nonprimes.add(c);
       hi = n;
     }
     return !nonprimes.has(n);
   };
-
-  function max(a, b) {
-    return a > b ? a : b;
-  }
 }
 
 // calculates the physical path of primes, represented as an array of [x,y] coordinates
