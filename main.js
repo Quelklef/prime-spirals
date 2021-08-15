@@ -35,10 +35,6 @@ function calcPath({ bound, turnAngle }, { padding }) {
   let maxX = -Infinity;
   let minY = Infinity;
   let maxY = -Infinity;
-  let sumX = 0;
-  let cntX = 0;
-  let sumY = 0;
-  let cntY = 0;
 
   let x = 0.0;
   let y = 0.0;
@@ -52,10 +48,6 @@ function calcPath({ bound, turnAngle }, { padding }) {
     maxX = Math.max(x, maxX);
     minY = Math.min(y, minY);
     maxY = Math.max(y, maxY);
-    sumX += x;
-    cntX += 1;
-    sumY += y;
-    cntY += 1;
 
     if (isPrime(n) || n === bound) {
       x += Math.cos(theta) * Number(n - prevprime);
@@ -73,8 +65,8 @@ function calcPath({ bound, turnAngle }, { padding }) {
   return {
     path,
     summ: {
-      minX, maxX, rangeX: maxX - minX, avgX: sumX / cntX,
-      minY, maxY, rangeY: maxY - minY, avgY: sumY / cntY,
+      minX, maxX, rangeX: maxX - minX,
+      minY, maxY, rangeY: maxY - minY,
     },
   };
 }
