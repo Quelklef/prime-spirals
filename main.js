@@ -38,7 +38,7 @@ function calcPath({ bound, turnAngle }, { padding }) {
 
   let x = 0.0;
   let y = 0.0;
-  let theta = Math.PI / 2;
+  let theta = 0;
   let prevprime = 0n;
 
   for (let n = 1n; n <= bound + 1n; n++) {
