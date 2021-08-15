@@ -49,6 +49,8 @@ let isPrime;
 
 // calculates the physical path of primes, represented as an array of [x,y] coordinates
 function calcPath({ bound, turnAngle }, { padding }) {
+  isPrime(bound);  // top-up the sieve
+
   const path = [];
 
   let minX = Infinity;
