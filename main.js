@@ -92,36 +92,36 @@ function render(c, state) {
       ];
   }
 
-  if (state.drawLinesWide)
-    c.lineWidth = scale;
+  c.lineCap = 'square';
 
-  if (state.drawColor) {
-    c.lineCap = 'square';
+  let [prevPx, prevPy] = T(...path[0]);
+  for (let i = 0; i < path.length; i++) {
+    const [px, py] = T(...path[i]);
 
-    let [prevPx, prevPy] = T(...path[0]);
-    for (let i = 0; i < path.length; i++) {
-      const [px, py] = T(...path[i]);
+    if (state.drawColor) {
+      const completion = i / (path.length - 1);
+      c.strokeStyle = c.fillStyle = `hsl(${Math.floor(completion * 360)}, 100%, 50%)`;
+    } else {
+      c.strokeStyle = c.fillStyle = 'black';
+    }
 
+    if (state.drawLines) {
+      if (state.wideStroke)
+        c.lineWidth = scale;
       const p = new Path2D();
       p.moveTo(prevPx, prevPy);
       p.lineTo(px, py);
-      const completion = i / (path.length - 1);
-      c.strokeStyle = `hsl(${Math.floor(completion * 360)}, 100%, 50%)`;
       c.stroke(p);
-
-      [prevPx, prevPy] = [px, py];
+    } else {
+      if (state.wideStroke)
+        c.fillRect(px - scale / 2, py - scale / 2, scale, scale);
+      else
+        c.fillRect(px, py, 1, 1);
     }
 
-  } else {
-
-    c.beginPath();
-    c.moveTo(...T(0, 0));
-    for (const [x, y] of path) {
-      c.lineTo(...T(x, y));
-    }
-    c.stroke();
-
+    [prevPx, prevPy] = [px, py];
   }
+
 }
 
 
@@ -129,9 +129,10 @@ function main() {
   const $optBound = document.getElementById('opt-bound');
   const $optAngle = document.getElementById('opt-angle');
   const $optColor = document.getElementById('opt-color');
+  const $optLines = document.getElementById('opt-lines');
   const $optWidth = document.getElementById('opt-width');
 
-  [$optBound, $optAngle, $optColor, $optWidth]
+  [$optBound, $optAngle, $optColor, $optLines, $optWidth]
     .forEach($o => $o.addEventListener('input', () => run()));
 
   window.addEventListener('resize', () => run());
@@ -148,7 +149,8 @@ function main() {
       bound: BigInt($optBound.value),
       turnAngle: Number($optAngle.value) * Math.PI,
       drawColor: $optColor.checked,
-      drawLinesWide: $optWidth.checked,
+      drawLines: $optLines.checked,
+      wideStroke: $optWidth.checked,
       canvasWidth: $canv.width,
       canvasHeight: $canv.height,
     };
