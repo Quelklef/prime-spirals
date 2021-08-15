@@ -6,7 +6,7 @@ function max(a, b) {
 // computes if a number is prime or not
 let isPrime;
 {
-  const nonprimes = new Set([1]);
+  const nonprimes = new Set([1n]);
   let hi = 1n;  // current sieve upper bound (inclusive)
 
   isPrime = n => {
