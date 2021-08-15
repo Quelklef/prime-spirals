@@ -117,21 +117,42 @@ function render(c, state) {
       ];
   }
 
-  c.fillStyle = 'black';
-  c.beginPath();
-  c.moveTo(...T(0, 0));
-  for (const [x, y] of path) {
-    c.lineTo(...T(x, y));
+  if (state.drawColor) {
+
+    let [prevPx, prevPy] = T(...path[0]);
+    for (let i = 0; i < path.length; i++) {
+      const [px, py] = T(...path[i]);
+
+      const p = new Path2D();
+      p.moveTo(prevPx, prevPy);
+      p.lineTo(px, py);
+      const completion = i / (path.length - 1);
+      c.strokeStyle = `hsl(${Math.floor(completion * 360)}, 100%, 50%)`;
+      c.stroke(p);
+
+      [prevPx, prevPy] = [px, py];
+    }
+
+  } else {
+
+    c.strokeStyle = 'black';
+    c.beginPath();
+    c.moveTo(...T(0, 0));
+    for (const [x, y] of path) {
+      c.lineTo(...T(x, y));
+    }
+    c.stroke();
+
   }
-  c.stroke();
 }
 
 
 function main() {
   const $optBound = document.getElementById('opt-bound');
   const $optAngle = document.getElementById('opt-angle');
+  const $optColor = document.getElementById('opt-color');
 
-  [$optBound, $optAngle].forEach($o => $o.addEventListener('input', () => run()));
+  [$optBound, $optAngle, $optColor].forEach($o => $o.addEventListener('input', () => run()));
   window.addEventListener('resize', () => run());
   run();
 
@@ -144,6 +165,7 @@ function main() {
     const state = {
       bound: BigInt($optBound.value),
       turnAngle: Number($optAngle.value) * Math.PI,
+      drawColor: $optColor.checked,
       canvasWidth: $canv.width,
       canvasHeight: $canv.height,
     };
