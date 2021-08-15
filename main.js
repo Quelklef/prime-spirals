@@ -94,8 +94,9 @@ function render(c, state) {
 
   if (state.drawLinesWide)
     c.lineWidth = scale;
-  c.lineCap = 'square';
+
   if (state.drawColor) {
+    c.lineCap = 'square';
 
     let [prevPx, prevPy] = T(...path[0]);
     for (let i = 0; i < path.length; i++) {
@@ -113,7 +114,6 @@ function render(c, state) {
 
   } else {
 
-    c.strokeStyle = 'black';
     c.beginPath();
     c.moveTo(...T(0, 0));
     for (const [x, y] of path) {
