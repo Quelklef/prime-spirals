@@ -71,6 +71,23 @@ function calcPath({ bound, turnAngle }, { padding }) {
   };
 }
 
+function calcColor(part, whole, { colorType }) {
+  switch (colorType) {
+    case 'none':
+      return 'black';
+
+    case 'percentage':
+      return `hsl(${Math.floor(part / whole * 360)}, 100%, 50%)`;
+
+    case 'cyclic':
+      return `hsl(${Math.floor(part * Math.pow(whole, 1/8) / whole * 360)}, 100%, 50%)`;
+
+    default:
+      console.warn(`Unknown color type '${colorType}'`);
+      return 'black';
+  }
+}
+
 function render(c, state) {
   const { path, summ } = calcPath(state, { padding: 1 });
 
@@ -98,12 +115,7 @@ function render(c, state) {
   for (let i = 0; i < path.length; i++) {
     const [px, py] = T(...path[i]);
 
-    if (state.drawColor) {
-      const completion = i / (path.length - 1);
-      c.strokeStyle = c.fillStyle = `hsl(${Math.floor(completion * 360)}, 100%, 50%)`;
-    } else {
-      c.strokeStyle = c.fillStyle = 'black';
-    }
+    c.strokeStyle = c.fillStyle = calcColor(i, path.length - 1, state);
 
     if (state.drawLines) {
       if (state.wideStroke)
@@ -148,7 +160,7 @@ function main() {
     const state = {
       bound: BigInt($optBound.value),
       turnAngle: Number($optAngle.value) * Math.PI,
-      drawColor: $optColor.checked,
+      colorType: $optColor.value,
       drawLines: $optLines.checked,
       wideStroke: $optWidth.checked,
       canvasWidth: $canv.width,
