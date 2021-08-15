@@ -155,8 +155,14 @@ function main() {
   function run() {
     const $canv = document.getElementById('canvas');
 
-    $canv.width = $canv.offsetWidth;
-    $canv.height = $canv.offsetHeight;
+    {
+      $canv.width = '';
+      $canv.height = '';
+      $canv.style.width = '100%';
+      $canv.style.height = 'auto';
+      $canv.width = $canv.offsetWidth;
+      $canv.height = $canv.offsetHeight;
+    }
 
     const state = {
       bound: BigInt($optBound.value),
