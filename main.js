@@ -34,8 +34,9 @@ let isPrime;
 
     if (n > hi) {
       for (let p = 2n; p <= isqrt(n); p++)
-        for (let c = max(hi / p * p, p * 2n); c <= n; c += p)
-          nonprimes.add(c);
+        if (!nonprimes.has(p))
+          for (let c = max(hi / p * p, p * 2n); c <= n; c += p)
+            nonprimes.add(c);
       hi = n;
     }
     return !nonprimes.has(n);
