@@ -47,7 +47,7 @@ let isPrime;
 }
 
 // calculates the physical path of primes, represented as an array of [x,y] coordinates
-function calcPath({ bound, turnAngle }) {
+function calcPath({ bound, turnAngle }, { padding }) {
   const path = [];
 
   let minX = Infinity;
@@ -84,6 +84,11 @@ function calcPath({ bound, turnAngle }) {
     }
   }
 
+  minX -= padding;
+  maxX += padding;
+  minY -= padding;
+  maxY += padding;
+
   return {
     path,
     summ: {
@@ -98,15 +103,16 @@ function calcPath({ bound, turnAngle }) {
 }
 
 function render(c, state) {
-  const { path, summ } = calcPath(state);
+  const { path, summ } = calcPath(state, { padding: 1 });
+
+  const scale = Math.min(
+    1 / summ.rangeX * state.canvasWidth,
+    1 / summ.rangeY * state.canvasHeight,
+  );
 
   // maps a physical coordinate to a pixel coordinate
   let T;
   {
-    const scale = Math.min(
-      1 / summ.rangeX * state.canvasWidth,
-      1 / summ.rangeY * state.canvasHeight,
-    );
     const phyOffsetX = -summ.minX;
     const phyOffsetY = -summ.minY;
     const pixOffsetX = (state.canvasWidth - summ.rangeX * scale) / 2;
@@ -117,6 +123,8 @@ function render(c, state) {
       ];
   }
 
+  c.lineWidth = scale;
+  c.lineCap = 'square';
   if (state.drawColor) {
 
     let [prevPx, prevPy] = T(...path[0]);
