@@ -3,6 +3,10 @@ function max(a, b) {
   return a > b ? a : b;
 }
 
+function mod(x, n) {
+  return ((x % n) + n) % n;
+}
+
 // computes if a number is prime or not
 let isPrime;
 {
@@ -73,10 +77,6 @@ function calcPath({ bound, turnAngle }, { padding }) {
       minY, maxY, rangeY: maxY - minY, avgY: sumY / cntY,
     },
   };
-
-  function mod(x, n) {
-    return ((x % n) + n) % n;
-  }
 }
 
 function render(c, state) {
