@@ -1,0 +1,48 @@
+<html>
+<head>
+  <script src="./main.js"></script>
+</head>
+
+<body>
+
+<div id="container">
+  <div id="options">
+    <label for="opt-bound">p<sub>max</sub></label>
+    <input id="opt-bound" type="number" step="1" min="1" value="3000" />
+
+    <label for="opt-angle">θ (units: π)</label>
+    <input id="opt-angle" type="number" step="0.00001" value="0.5" />
+  </div>
+  <canvas id="canvas" />
+</div>
+
+<style>
+
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#options {
+  width: 100%;
+  padding: 10px 5px;
+}
+
+#canvas {
+  width: 100%;
+  flex: 1;
+}
+
+</style>
+
+</body>
+</html>
