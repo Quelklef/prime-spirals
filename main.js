@@ -92,7 +92,8 @@ function render(c, state) {
       ];
   }
 
-  c.lineWidth = scale;
+  if (state.drawLinesWide)
+    c.lineWidth = scale;
   c.lineCap = 'square';
   if (state.drawColor) {
 
@@ -128,9 +129,13 @@ function main() {
   const $optBound = document.getElementById('opt-bound');
   const $optAngle = document.getElementById('opt-angle');
   const $optColor = document.getElementById('opt-color');
+  const $optWidth = document.getElementById('opt-width');
 
-  [$optBound, $optAngle, $optColor].forEach($o => $o.addEventListener('input', () => run()));
+  [$optBound, $optAngle, $optColor, $optWidth]
+    .forEach($o => $o.addEventListener('input', () => run()));
+
   window.addEventListener('resize', () => run());
+
   run();
 
   function run() {
@@ -143,6 +148,7 @@ function main() {
       bound: BigInt($optBound.value),
       turnAngle: Number($optAngle.value) * Math.PI,
       drawColor: $optColor.checked,
+      drawLinesWide: $optWidth.checked,
       canvasWidth: $canv.width,
       canvasHeight: $canv.height,
     };
