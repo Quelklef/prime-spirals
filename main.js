@@ -1,27 +1,4 @@
 
-// maps n to floor(sqrt(n))
-let isqrt;
-{
-  const table = { 0n: 0n };  // map n^2 -> n  (actually, map n -> floor(sqrt(n)))
-  let n2 = 0n;  // the highest n^2 in the table
-  let n1 = 0n;  // the highest n^1 in the table
-
-  isqrt = x2 => {
-    if (typeof x2 !== 'bigint' || x2 < 0n)
-      throw Error('Expected nonnegative BigInt');
-
-    while (n2 < x2) {
-      const sq = (n1 + 1n) * (n1 + 1n);
-      table[sq] = n1 + 1n;
-      for (let i = n2; i < sq; i++)
-        table[i] = n1;
-      n1++;
-      n2 = sq;
-    }
-    return table[x2];
-  }
-}
-
 // computes if a number is prime or not
 let isPrime;
 {
@@ -33,7 +10,7 @@ let isPrime;
       throw Error('Expected positive BigInt');
 
     if (n > hi) {
-      for (let p = 2n; p <= isqrt(n); p++)
+      for (let p = 2n; p * p <= n; p++)
         if (!nonprimes.has(p))
           for (let c = max(hi / p * p, p * 2n); c <= n; c += p)
             nonprimes.add(c);
