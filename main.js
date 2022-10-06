@@ -26,7 +26,7 @@ let isPrime;
 }
 
 // calculates the physical path of primes, represented as an array of [x,y] coordinates
-function calcPath({ bound, turnAngle }, { padding }) {
+function calcPath({ bound, turnAngle }) {
   isPrime(bound);  // top-up the sieve
 
   const path = [];
@@ -57,10 +57,13 @@ function calcPath({ bound, turnAngle }, { padding }) {
     }
   }
 
-  minX -= padding;
-  maxX += padding;
-  minY -= padding;
-  maxY += padding;
+  // Pad for god measure
+  const rangeX = maxX - minX;
+  const rangeY = maxY - minY;
+  minX -= rangeX * 0.05;
+  maxX += rangeX * 0.05;
+  minY -= rangeY * 0.05;
+  maxY += rangeY * 0.05;
 
   return {
     path,
@@ -89,7 +92,7 @@ function calcColor(part, whole, { colorType }) {
 }
 
 function render(c, state) {
-  const { path, summ } = calcPath(state, { padding: 1 });
+  const { path, summ } = calcPath(state);
 
   const scale = Math.min(
     1 / summ.rangeX * state.canvasWidth,
